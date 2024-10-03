@@ -31,9 +31,9 @@ const loadCatagories = () => {
 }
 
 // loadVideos
-const loadVideos = () => {
+const loadVideos = (searchText = "") => {
     // fetch
-    fetch('https://openapi.programming-hero.com/api/phero-tube/videos')
+    fetch(`https://openapi.programming-hero.com/api/phero-tube/videos?title=${searchText}`)
         .then(res => res.json())
         .then(data => displayVideos(data.videos))
         .catch(err => console.log(err))
@@ -63,7 +63,7 @@ const displayDetails = async (videoId) => {
     const data = await res.json();
     console.log(data.video.description)
 
-   const descriptionContainer= document.getElementById('modal-content');
+    const descriptionContainer = document.getElementById('modal-content');
     descriptionContainer.innerHTML = `
         <p>${data.video.description}</p>
     `
@@ -118,6 +118,9 @@ const displayVideos = (videos) => {
         videoContainer.append(videoCard)
     })
 }
+document.getElementById('search-input').addEventListener('keyup', (e) => {
+    loadVideos(e.target.value)
+})
 
 loadCatagories();
 loadVideos();
